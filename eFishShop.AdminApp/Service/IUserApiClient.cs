@@ -9,8 +9,14 @@ namespace eFishShop.AdminApp.Services
 {
     public interface IUserApiClient
     {
-        Task<string> Authenticate(LoginRequest request);
-        Task<bool> RegisterUser(RegisterRequest registerRequest);
-        Task<PageResult<UserViewModel>> GetUsersPagings(GetUserPagingRequest request);
+        Task<ApiResult<string>> Authenticate(LoginRequest request);
+
+        Task<ApiResult<PageResult<UserViewModel>>> GetUsersPagings(GetUserPagingRequest request);
+
+        Task<ApiResult<bool>> RegisterUser(RegisterRequest registerRequest);
+
+        Task<ApiResult<bool>> UpdateUser(Guid id, UserUpdateRequest request);
+
+        Task<ApiResult<UserViewModel>> GetById(Guid id);
     }
 }

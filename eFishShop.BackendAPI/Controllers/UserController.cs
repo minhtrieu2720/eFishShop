@@ -27,13 +27,13 @@ namespace eFishShop.BackendAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var resultToken = await _userService.Authencate(request);
-            if (string.IsNullOrEmpty(resultToken))
+            var result = await _userService.Authencate(request);
+            if (string.IsNullOrEmpty(result.ResultObj))
             {
                 return BadRequest("Username or password is incorrect.");
             }
         
-            return Ok(resultToken);
+            return Ok(result);
         }
 
         [HttpPost("register")]
@@ -44,18 +44,39 @@ namespace eFishShop.BackendAPI.Controllers
                 return BadRequest(ModelState);
 
             var result = await _userService.Register(request);
-            if(!result)
+            if(!result.IsSuccessed)
             {
                 return BadRequest("Register");
             }
             return Ok("ok");
         }
+        //PUT: http://localhost/api/user/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _userService.Update(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
 
         [HttpGet("paging")]
         public async Task<IActionResult> GetAllPaging([FromQuery] GetUserPagingRequest request)
         {
-            var products = await _userService.GetUserPaging(request);
+            var products = await _userService.GetUsersPaging(request);
             return Ok(products);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await _userService.GetById(id);
+            return Ok(user);
         }
     }
 }
