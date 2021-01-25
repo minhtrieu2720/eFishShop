@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using eFishShop.AdminApp.Controllers;
 using eFishShop.AdminApp.Services;
 using eFishShop.ViewModels.System;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace eShopSolution.AdminApp.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
