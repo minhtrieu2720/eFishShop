@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eFishShop.Utilities\eFishShop.Utilities.csproj" />
     <ProjectReference Include="..\eFishShop.ViewModels\eFishShop.ViewModels.csproj" />
   </ItemGroup>
 

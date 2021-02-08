@@ -12,21 +12,19 @@ namespace eFishShop.Application.Catalog.Products
         Task<int> Create(ProductCreateRequest request);
 
         Task<int> Update(ProductUpdateRequest request);
-        Task<bool> UpdatePrice(int productId, decimal newPrice);
 
-        Task AddViewCount(int productId);
-
-        Task<bool> UpdateStock(int productId, int addeQuantity);
-        
         Task<int> Delete(int productId);
 
-        Task<ProductViewModel> GetById(int productId);
+        Task<ProductViewModel> GetById(int productId, string languageId);
 
-        //Task<PageResult<ProductViewModel>> GetAll();
+        Task<bool> UpdatePrice(int productId, decimal newPrice);
+
+        Task<bool> UpdateStock(int productId, int addedQuantity);
+
+        Task AddViewcount(int productId);
 
         Task<PageResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
-        Task<PageResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request);
 
-        Task<List<ProductViewModel>> GetAll();
+        Task<PageResult<ProductViewModel>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest request);
     }
 }
