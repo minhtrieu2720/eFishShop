@@ -1,6 +1,7 @@
 using eFishShop.Application.Catalog.Products;
 using eFishShop.Application.Common;
 using eFishShop.Application.System;
+using eFishShop.Application.System.Roles;
 using eFishShop.Data.EF;
 using eFishShop.Data.Entities;
 using eFishShop.Utilities.Constants;
@@ -55,6 +56,8 @@ namespace eFishShop.BackendAPI
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
             services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
+
+            services.AddTransient<IRoleService, RoleService>();
 
 
             services.AddControllers()
