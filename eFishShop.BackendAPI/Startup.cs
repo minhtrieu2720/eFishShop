@@ -1,3 +1,4 @@
+using eFishShop.Application.Catalog.Categories;
 using eFishShop.Application.Catalog.Products;
 using eFishShop.Application.Common;
 using eFishShop.Application.System;
@@ -49,6 +50,7 @@ namespace eFishShop.BackendAPI
 
             //Declare DI
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddTransient<IStorageService, FileStorageService>();
 

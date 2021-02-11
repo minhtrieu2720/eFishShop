@@ -51,7 +51,6 @@ namespace eFishShop.Data.EF
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-
         public DbSet<AppConfig> AppConfigs { get; set; }
 
 
@@ -75,6 +74,5 @@ namespace eFishShop.Data.EF
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Slide> Slides { get; set; }
-
     }
 }
