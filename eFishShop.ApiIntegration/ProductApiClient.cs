@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace eFishShop.AdminApp.Service
+namespace eFishShop.ApiIntegration
 {
     public class ProductApiClient : BaseApiClient, IProductApiClient
     {
@@ -17,6 +17,25 @@ namespace eFishShop.AdminApp.Service
                     IConfiguration configuration)
             : base(httpClientFactory, httpContextAccessor, configuration)
         {
+        }
+
+        public async Task<ProductViewModel> GetById(int id, string languageId)
+        {
+            var data = await GetAsync<ProductViewModel>($"/api/product/{id}/{languageId}");
+
+            return data;
+        }
+
+        public async Task<List<ProductViewModel>> GetFeaturedProducts(string languageId, int take)
+        {
+            var data = await GetListAsync<ProductViewModel>($"/api/product/featured/{languageId}/{take}");
+            return data;
+        }
+
+        public async Task<List<ProductViewModel>> GetLatestProducts(string languageId, int take)
+        {
+            var data = await GetListAsync<ProductViewModel>($"/api/product/latest/{languageId}/{take}");
+            return data;
         }
 
         public async Task<PageResult<ProductViewModel>> GetPagings(GetManageProductPagingRequest request)

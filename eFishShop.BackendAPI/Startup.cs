@@ -3,6 +3,7 @@ using eFishShop.Application.Common;
 using eFishShop.Application.System;
 using eFishShop.Application.System.Languages;
 using eFishShop.Application.System.Roles;
+using eFishShop.Application.Utilities.Slides;
 using eFishShop.Data.EF;
 using eFishShop.Data.Entities;
 using eFishShop.Utilities.Constants;
@@ -60,6 +61,8 @@ namespace eFishShop.BackendAPI
 
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<ISlideService, SlideService>();
+
 
 
             services.AddControllers()

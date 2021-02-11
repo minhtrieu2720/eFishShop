@@ -26,5 +26,9 @@ namespace eFishShop.Application.Catalog.Products
         Task<PageResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
 
         Task<PageResult<ProductViewModel>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest request);
+
+        Task<List<ProductViewModel>> GetFeaturedProducts(string languageId, int take);
+        Task<List<ProductViewModel>> GetLatestProducts(string languageId, int take);
+
     }
 }

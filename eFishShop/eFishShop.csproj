@@ -9,8 +9,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.0.1" />
     <PackageReference Include="LazZiya.ExpressLocalization" Version="4.0.4" />
     <PackageReference Include="LazZiya.TagHelpers" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eFishShop.ApiIntegration\eFishShop.ApiIntegration.csproj" />
+    <ProjectReference Include="..\eFishShop.Utilities\eFishShop.Utilities.csproj" />
+    <ProjectReference Include="..\eFishShop.ViewModels\eFishShop.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

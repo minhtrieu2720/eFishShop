@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace eFishShop.AdminApp.Service
+namespace eFishShop.ApiIntegration
 {
     public interface ILanguageApiClient
     {

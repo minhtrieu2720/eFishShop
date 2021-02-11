@@ -25,16 +25,33 @@ namespace eFishShop.BackendAPI.Controllers
         [HttpGet("paging")]
         public async Task<IActionResult> GetAllPaging([FromQuery] GetManageProductPagingRequest request)
         {
-            var products = await _productService.GetAllPaging(request);
-            return Ok(products);
+            var product = await _productService.GetAllPaging(request);
+            return Ok(product);
         }
 
         [HttpGet("{productId}/{languageId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int productId, string languageId)
         {
             var product = await _productService.GetById(productId, languageId);
             if (product == null)
                 return BadRequest("Cannot find product");
+            return Ok(product);
+        }
+
+        [HttpGet("featured/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFeaturedProducts(int take, string languageId)
+        {
+            var product = await _productService.GetFeaturedProducts(languageId, take);
+            return Ok(product);
+        }
+
+        [HttpGet("latest/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLatestProducts(int take, string languageId)
+        {
+            var product = await _productService.GetLatestProducts(languageId, take);
             return Ok(product);
         }
 

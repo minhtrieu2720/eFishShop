@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eFishShop.ViewModels", "eFi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eFishShop.BackendAPI", "eFishShop.BackendAPI\eFishShop.BackendAPI.csproj", "{D5FF9602-A9EA-45D2-82D1-E792BECF2FD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eFishShop.AdminApp", "eFishShop.AdminApp\eFishShop.AdminApp.csproj", "{62ED291B-78CB-45A9-BE03-6DF8D914DCCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eFishShop.AdminApp", "eFishShop.AdminApp\eFishShop.AdminApp.csproj", "{62ED291B-78CB-45A9-BE03-6DF8D914DCCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eFishShop.ApiIntegration", "eFishShop.ApiIntegration\eFishShop.ApiIntegration.csproj", "{354AE9FA-040B-4212-972F-DEDA515605CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{62ED291B-78CB-45A9-BE03-6DF8D914DCCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62ED291B-78CB-45A9-BE03-6DF8D914DCCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62ED291B-78CB-45A9-BE03-6DF8D914DCCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{354AE9FA-040B-4212-972F-DEDA515605CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{354AE9FA-040B-4212-972F-DEDA515605CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{354AE9FA-040B-4212-972F-DEDA515605CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{354AE9FA-040B-4212-972F-DEDA515605CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

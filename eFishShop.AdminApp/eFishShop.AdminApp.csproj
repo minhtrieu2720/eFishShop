@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="9.4.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eFishShop.ApiIntegration\eFishShop.ApiIntegration.csproj" />
     <ProjectReference Include="..\eFishShop.Utilities\eFishShop.Utilities.csproj" />
     <ProjectReference Include="..\eFishShop.ViewModels\eFishShop.ViewModels.csproj" />
   </ItemGroup>

@@ -83,8 +83,8 @@ namespace eFishShop.BackendAPI.Controllers
         [HttpGet("paging")]
         public async Task<IActionResult> GetAllPaging([FromQuery] GetUserPagingRequest request)
         {
-            var products = await _userService.GetUsersPaging(request);
-            return Ok(products);
+            var product = await _userService.GetUsersPaging(request);
+            return Ok(product);
         }
 
         [HttpGet("{id}")]

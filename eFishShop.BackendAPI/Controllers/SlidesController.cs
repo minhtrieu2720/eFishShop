@@ -1,5 +1,4 @@
 ﻿using eFishShop.Application.System.Languages;
-using eFishShop.Application.Utilities.Slides;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,22 +10,22 @@ namespace eFishShop.BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class SlidesController : ControllerBase
+    public class LanguagesController : ControllerBase
     {
-        private readonly ISlideService _slideService;
+        private readonly ILanguageService _languageService;
 
-        public SlidesController(ISlideService slideService)
+        public LanguagesController(
+            ILanguageService languageService)
         {
-            _slideService = slideService;
+            _languageService = languageService;
         }
 
-        [HttpGet]
+        [HttpGet()]
         [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
-            var slides = await _slideService.GetAll();
-            return Ok(slides);
+            var products = await _languageService.GetAll();
+            return Ok(products);
         }
     }
 }

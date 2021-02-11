@@ -1,12 +1,9 @@
-﻿using eFishShop.AdminApp.Service;
+﻿using eFishShop.ApiIntegration;
 using eFishShop.Utilities.Constants;
 using eFishShop.ViewModels.Catalog.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace eFishShop.AdminApp.Controllers
