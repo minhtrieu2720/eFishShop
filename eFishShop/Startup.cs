@@ -3,6 +3,7 @@ using eFishShop.LocalizationResources;
 using eFishShop.ViewModels.System;
 using FluentValidation.AspNetCore;
 using LazZiya.ExpressLocalization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +33,12 @@ namespace eFishShop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+             .AddCookie(options =>
+             {
+                 options.LoginPath = "/Account/Login";
+                 options.AccessDeniedPath = "/User/Forbidden/";
+             });
             var cultures = new[]
           {
                 new CultureInfo("en"),
@@ -77,6 +83,7 @@ namespace eFishShop
             services.AddTransient<ISlideApiClient, SlideApiClient>();
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+            services.AddTransient<IUserApiClient, UserApiClient>();
 
         }
 
@@ -98,7 +105,7 @@ namespace eFishShop
 
             app.UseRouting();
 
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
             app.UseRequestLocalization();

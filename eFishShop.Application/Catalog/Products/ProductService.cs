@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Net.Http.Headers;
 using eFishShop.Application.Common;
+using eFishShop.Utilities.Constants;
 
 namespace eFishShop.Application.Catalog.Products
 {
@@ -20,7 +21,7 @@ namespace eFishShop.Application.Catalog.Products
     {
         private readonly eFishShopDbContext _context;
         private readonly IStorageService _storageService;
-
+        private const string USER_CONTENT_FOLDER_NAME = "user-content";
         public ProductService(eFishShopDbContext context, IStorageService storageService)
         {
             _context = context;
@@ -29,6 +30,34 @@ namespace eFishShop.Application.Catalog.Products
         }
         public async Task<int> Create(ProductCreateRequest request)
         {
+            var languages = _context.Languages;
+            var translations = new List<ProductTranslation>();
+            foreach (var language in languages)
+            {
+                if (language.Id == request.LanguageId)
+                {
+                    translations.Add(new ProductTranslation()
+                    {
+                        Name = request.Name,
+                        Description = request.Description,
+                        Details = request.Details,
+                        SeoDescription = request.SeoDescription,
+                        SeoAlias = request.SeoAlias,
+                        SeoTitle = request.SeoTitle,
+                        LanguageId = request.LanguageId
+                    });
+                }
+                else
+                {
+                    translations.Add(new ProductTranslation()
+                    {
+                        Name = SystemConstants.ProductConstants.NA,
+                        Description = SystemConstants.ProductConstants.NA,
+                        SeoAlias = SystemConstants.ProductConstants.NA,
+                        LanguageId = language.Id
+                    });
+                }
+            }
             var product = new Product()
             {
                 Price = request.Price,
@@ -36,22 +65,9 @@ namespace eFishShop.Application.Catalog.Products
                 Stock = request.Stock,
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
-
-                ProductTranslations = new List<ProductTranslation>()
-                {
-                    new ProductTranslation()
-                    {
-                        Name = request.Name,
-                        Description = request.Description,
-                        Details=request.Details,
-                        SeoDescription=request.SeoDescription,
-                        SeoAlias=request.SeoAlias,
-                        SeoTitle=request.SeoTitle,
-                        LanguageId=request.LanguageId
-                    }
-                }
+                ProductTranslations = translations
             };
-
+            //Save image
             if (request.ThumbnailImage != null)
             {
                 product.ProductImages = new List<ProductImage>()
@@ -68,7 +84,8 @@ namespace eFishShop.Application.Catalog.Products
                 };
             }
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return product.Id;
         }
 
         public async Task<int> Delete(int productId)
@@ -102,6 +119,7 @@ namespace eFishShop.Application.Catalog.Products
             productTranslations.Description = request.Description;
             productTranslations.Details = request.Details;
 
+            //Save image
             if (request.ThumbnailImage != null)
             {
                 var thumbnailImage = await _context.ProductImages.FirstOrDefaultAsync(i => i.IsDefault == true && i.ProductId == request.Id);
@@ -120,17 +138,21 @@ namespace eFishShop.Application.Catalog.Products
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.Id
-                        where pt.LanguageId == request.LanguageId
-                        select new { p, pt, pic };
+                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId into ppic
+                        from pic in ppic.DefaultIfEmpty()
+                        join c in _context.Categories on pic.CategoryId equals c.Id into picc
+                        from c in picc.DefaultIfEmpty()
+                        join pi in _context.ProductImages on p.Id equals pi.ProductId into ppi
+                        from pi in ppi.DefaultIfEmpty()
+                        where pt.LanguageId == request.LanguageId && pi.IsDefault == true
+                        select new { p, pt, pic, pi };
             //2. filter
             if (!string.IsNullOrEmpty(request.Keyword))
                 query = query.Where(x => x.pt.Name.Contains(request.Keyword));
 
-            if (request.CategoryIds != null && request.CategoryIds.Count > 0)
+            if (request.CategoryIds != null && request.CategoryIds != 0)
             {
-                query = query.Where(p => request.CategoryIds.Contains(p.pic.CategoryId));
+                query = query.Where(p => p.pic.CategoryId == request.CategoryIds);
             }
 
             //3. Paging
@@ -152,7 +174,8 @@ namespace eFishShop.Application.Catalog.Products
                     SeoDescription = x.pt.SeoDescription,
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
-                    ViewCount = x.p.ViewCount
+                    ViewCount = x.p.ViewCount,
+                    ThumbnailImage = x.pi.ImagePath
                 }).ToListAsync();
 
             //4. Select and projection
@@ -194,7 +217,7 @@ namespace eFishShop.Application.Catalog.Products
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
-            return fileName;
+            return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
         }
 
         public async Task<ProductViewModel> GetById(int productId, string languageId)
@@ -202,6 +225,14 @@ namespace eFishShop.Application.Catalog.Products
             var product = await _context.Products.FindAsync(productId);
             var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == productId
             && x.LanguageId == languageId);
+
+            var categories = await (from c in _context.Categories
+                                    join ct in _context.CategoryTranslations on c.Id equals ct.CategoryId
+                                    join pic in _context.ProductInCategories on c.Id equals pic.CategoryId
+                                    where pic.ProductId == productId && ct.LanguageId == languageId
+                                    select ct.Name).ToListAsync();
+
+            var image = await _context.ProductImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefaultAsync();
 
             var productViewModel = new ProductViewModel()
             {
@@ -217,7 +248,9 @@ namespace eFishShop.Application.Catalog.Products
                 SeoDescription = productTranslation != null ? productTranslation.SeoDescription : null,
                 SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
                 Stock = product.Stock,
-                ViewCount = product.ViewCount
+                ViewCount = product.ViewCount,
+                Categories = categories,
+                ThumbnailImage = image != null ? image.ImagePath : "no-image.jpg"
             };
             return productViewModel;
         }

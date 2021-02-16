@@ -56,6 +56,8 @@ namespace eFishShop.BackendAPI.Controllers
         }
 
         [HttpPost]
+        [Consumes("multipart/form-data")]
+        [Authorize]
         public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
@@ -71,20 +73,26 @@ namespace eFishShop.BackendAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = productId }, product);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromForm] ProductUpdateRequest request)
+        [HttpPut("{productId}")]
+        [Consumes("multipart/form-data")]
+        [Authorize]
+        public async Task<IActionResult> Update([FromRoute] int productId, [FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            request.Id = productId;
             var affectedResult = await _productService.Update(request);
             if (affectedResult == 0)
                 return BadRequest();
             return Ok();
         }
 
+
         [HttpDelete("{productId}")]
+        [Consumes("multipart/form-data")]
+        [Authorize]
         public async Task<IActionResult> Delete(int productId)
         {
             var affectedResult = await _productService.Delete(productId);
