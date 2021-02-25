@@ -46,8 +46,9 @@ namespace eFishShop
             };
 
             services.AddControllersWithViews()
-                .AddExpressLocalization<ExpressLocalizationResource, ViewLocalizationResource>(ops =>
-                {
+                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>())
+                 .AddExpressLocalization<ExpressLocalizationResource, ViewLocalizationResource>(ops =>
+                 {
                     // When using all the culture providers, the localization process will
                     // check all available culture providers in order to detect the request culture.
                     // If the request culture is found it will stop checking and do localization accordingly.
@@ -87,7 +88,6 @@ namespace eFishShop
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -97,7 +97,6 @@ namespace eFishShop
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -130,7 +129,7 @@ namespace eFishShop
 
                 endpoints.MapControllerRoute(
                     name: "Product Detail En",
-                    pattern: "{culture}/products/{id}", new
+                    pattern: "{culture}/product/{id}", new
                     {
                         controller = "Product",
                         action = "Detail"

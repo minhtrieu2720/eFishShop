@@ -7,7 +7,7 @@ namespace eFishShop.Utilities.Constants
     public class SystemConstants
     {
         public const string MainConnectionString = "eFishShop";
-
+        public const string CartSession = "CartSession";
         public class AppSettings
         {
             public const string DefaultLanguageId = "DefaultLanguageId";
